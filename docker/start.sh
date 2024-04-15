@@ -3,9 +3,9 @@ echo $@
 
 # WSL Fix
 WG_QUICK_PATH="/usr/bin/wg-quick"
-
-if ls /lib/modules/*.wsl &> /dev/null; then
-    sed -i 's|| cmd $iptables-restore -n||g' "$WG_QUICK_PATH"
+if ls /lib/modules/*WSL* &> 0; then
+    sed -i 's|\| cmd \$iptables-restore -n||g' "$WG_QUICK_PATH"
+    echo "WSL fixed"
 else
     echo "seems like its not a WSL"
 fi
