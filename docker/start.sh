@@ -1,6 +1,15 @@
 #!/bin/bash
 echo $@
 
+# WSL Fix
+WG_QUICK_PATH="/usr/bin/wg-quick"
+
+if ls /lib/modules/*.wsl &> /dev/null; then
+    sed -i 's|| cmd $iptables-restore -n||g' "$WG_QUICK_PATH"
+else
+    echo "seems like its not a WSL"
+fi
+
 cp /tinyproxy/tinyproxy.conf /tmp/tinyproxy.conf
 ip=$(cat /etc/hosts | grep  wireguard | awk '{print $1}')
 gateway=$(route -n | grep 'UG[ \t]' | awk '{print $2}')
