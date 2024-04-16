@@ -1,13 +1,13 @@
 #!/bin/bash
 echo $@
 
-# WSL Fix
 WG_QUICK_PATH="/usr/bin/wg-quick"
-if ls /lib/modules/*WSL* &> 0; then
-    sed -i 's|\| cmd \$iptables-restore -n||g' "$WG_QUICK_PATH"
-    echo "WSL fixed"
+if [  $(find /lib/modules/$(uname -r) -type f -name '*wireguard*.ko*') ]; 
+then
+    echo "Wireguard module is there"
 else
-    echo "seems like its not a WSL"
+    echo "No wireguard module found, trying to use workaround"
+	sed -i 's|\| cmd \$iptables-restore -n||g' "$WG_QUICK_PATH"
 fi
 
 cp /tinyproxy/tinyproxy.conf /tmp/tinyproxy.conf
